@@ -1,0 +1,22 @@
+{
+  "name": "sala-reuniao-agendamento",
+  "version": "1.0.0",
+  "description": "Sistema profissional de agendamento de sala de reunião",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js",
+    "init-db": "node backend/scripts/init-db.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "body-parser": "^1.20.2",
+    "mongodb": "^5.7.0",
+    "dotenv": "^16.3.1"
+  }
+}

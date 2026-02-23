@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel TV - Sala de Reunião</title>
+  <link rel="stylesheet" href="/painel-tv-styles.css">
+</head>
+<body>
+  <div id="painel" class="painel-container">
+    <!-- Status da Sala -->
+    <div class="status-container">
+      <div id="status-sala" class="status-box">
+        <div class="status-circulo" id="status-circulo"></div>
+        <div class="status-texto" id="status-texto">Verificando...</div>
+      </div>
+    </div>
+
+    <!-- Reunião Atual -->
+    <div class="reuniao-container" id="reuniao-atual-container" style="display: none;">
+      <h2>REUNIÃO EM ANDAMENTO</h2>
+      <div class="reuniao-card">
+        <div class="reuniao-nome" id="reuniao-atual-nome"></div>
+        <div class="reuniao-detalhes">
+          <div class="reuniao-info">
+            <span class="label">Setor:</span>
+            <span class="valor" id="reuniao-atual-setor"></span>
+          </div>
+          <div class="reuniao-info">
+            <span class="label">Pessoas:</span>
+            <span class="valor" id="reuniao-atual-pessoas"></span>
+          </div>
+          <div class="reuniao-info">
+            <span class="label">Horário:</span>
+            <span class="valor" id="reuniao-atual-horario"></span>
+          </div>
+        </div>
+        <div class="reuniao-descricao" id="reuniao-atual-descricao"></div>
+      </div>
+    </div>
+
+    <!-- Próxima Reunião -->
+    <div class="proxima-container" id="proxima-reuniao-container" style="display: none;">
+      <h2>PRÓXIMA REUNIÃO</h2>
+      <div class="proxima-card">
+        <div class="proxima-nome" id="proxima-reuniao-nome"></div>
+        <div class="proxima-detalhes">
+          <div class="proxima-info">
+            <span class="label">Início:</span>
+            <span class="valor" id="proxima-reuniao-hora"></span>
+          </div>
+          <div class="proxima-info">
+            <span class="label">Setor:</span>
+            <span class="valor" id="proxima-reuniao-setor"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Relógio Grande -->
+    <div class="relogio-container">
+      <div class="relogio" id="relogio-grande">00:00:00</div>
+    </div>
+  </div>
+
+  <script src="/painel-tv.js"></script>
+</body>
+</html>

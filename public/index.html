@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendamento - Sala de Reunião</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div id="app" class="container-principal">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-conteudo">
+        <h1 class="logo">📅 Sala de Reunião</h1>
+        <button class="btn btn-nova-reserva" onclick="abrirFormularioNovaReserva()">
+          + Nova Reserva
+        </button>
+      </div>
+    </header>
+
+    <!-- Barra de Filtros -->
+    <div class="filtros-container">
+      <div class="filtro-grupo">
+        <label for="filtro-data">Data:</label>
+        <input type="date" id="filtro-data" onchange="aplicarFiltros()">
+      </div>
+      <div class="filtro-grupo">
+        <label for="filtro-busca">Buscar por nome ou setor:</label>
+        <input type="text" id="filtro-busca" placeholder="Digite para filtrar..." onkeyup="aplicarFiltros()">
+      </div>
+      <button class="btn btn-secundario" onclick="limparFiltros()">Limpar Filtros</button>
+    </div>
+
+    <!-- Kanban -->
+    <div class="kanban-container">
+      <!-- Coluna Manhã -->
+      <div class="kanban-coluna">
+        <div class="kanban-titulo">🌅 Manhã (07:00 - 12:00)</div>
+        <div class="kanban-cards" id="coluna-manha"></div>
+      </div>
+
+      <!-- Coluna Tarde -->
+      <div class="kanban-coluna">
+        <div class="kanban-titulo">☀️ Tarde (12:00 - 18:00)</div>
+        <div class="kanban-cards" id="coluna-tarde"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Nova Reserva -->
+  <div id="modal-nova-reserva" class="modal">
+    <div class="modal-conteudo">
+      <span class="modal-fechar" onclick="fecharModalNovaReserva()">&times;</span>
+      <h2>Nova Reserva</h2>
+      <form id="form-nova-reserva" onsubmit="salvarNovaReserva(event)">
+        <div class="form-grupo">
+          <label for="input-nome">Nome *</label>
+          <input type="text" id="input-nome" required>
+        </div>
+
+        <div class="form-grupo">
+          <label for="input-setor">Setor *</label>
+          <input type="text" id="input-setor" placeholder="Ex: TI, RH, Vendas" required>
+        </div>
+
+        <div class="form-grupo">
+          <label for="input-data">Data *</label>
+          <input type="date" id="input-data" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-grupo">
+            <label for="input-hora-inicio">Hora Início *</label>
+            <select id="input-hora-inicio" required onchange="atualizarHoraFim()">
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+
+          <div class="form-grupo">
+            <label for="input-hora-fim">Hora Fim *</label>
+            <select id="input-hora-fim" required>
+              <option value="">Selecione...</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-grupo">
+          <label for="input-pessoas">Quantidade de Pessoas *</label>
+          <input type="number" id="input-pessoas" min="1" required>
+        </div>
+
+        <div class="form-grupo">
+          <label for="input-descricao">Descrição</label>
+          <textarea id="input-descricao" rows="3" placeholder="Detalhes da reunião..."></textarea>
+        </div>
+
+        <div class="form-botoes">
+          <button type="button" class="btn btn-secundario" onclick="fecharModalNovaReserva()">Cancelar</button>
+          <button type="submit" class="btn btn-primario">Agendar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Detalhes da Reserva -->
+  <div id="modal-detalhes" class="modal">
+    <div class="modal-conteudo">
+      <span class="modal-fechar" onclick="fecharModalDetalhes()">&times;</span>
+      <h2>Detalhes da Reserva</h2>
+      <div id="detalhes-conteudo"></div>
+    </div>
+  </div>
+
+  <script src="/index.js"></script>
+</body>
+</html>

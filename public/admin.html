@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Agendamento de Sala</title>
+  <link rel="stylesheet" href="/admin-styles.css">
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Header -->
+    <header class="admin-header">
+      <h1>🛡️ Painel de Administração</h1>
+      <div class="header-info">
+        <span id="user-info">Carregando...</span>
+        <button class="btn btn-logout" onclick="logout()">Sair</button>
+      </div>
+    </header>
+
+    <!-- Login -->
+    <div id="login-section" class="login-section">
+      <div class="login-card">
+        <h2>Acesso de Administrador</h2>
+        <p>Digite seu email para acessar o painel</p>
+        <form onsubmit="fazerLogin(event)">
+          <input type="email" id="email-login" placeholder="Seu email" required>
+          <button type="submit" class="btn btn-primario">Acessar</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Painel Admin (oculto inicialmente) -->
+    <div id="admin-section" class="admin-section" style="display: none;">
+      <!-- Filtros -->
+      <div class="admin-filtros">
+        <div class="filtro-grupo">
+          <label for="admin-filtro-data">Data:</label>
+          <input type="date" id="admin-filtro-data" onchange="filtrarReservas()">
+        </div>
+        <div class="filtro-grupo">
+          <label for="admin-filtro-setor">Setor:</label>
+          <input type="text" id="admin-filtro-setor" placeholder="Filtrar por setor..." onkeyup="filtrarReservas()">
+        </div>
+        <button class="btn btn-secundario" onclick="exportarCSV()">📥 Exportar CSV</button>
+      </div>
+
+      <!-- Visualização em Tabela -->
+      <div class="tabela-container">
+        <table class="tabela-reservas">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Setor</th>
+              <th>Data</th>
+              <th>Horário</th>
+              <th>Pessoas</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-corpo">
+            <tr><td colspan="7">Carregando...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Editar Reserva -->
+  <div id="modal-editar" class="modal">
+    <div class="modal-conteudo">
+      <span class="modal-fechar" onclick="fecharModalEditar()">&times;</span>
+      <h2>Editar Reserva</h2>
+      <form id="form-editar" onsubmit="salvarEdicao(event)">
+        <input type="hidden" id="editar-id">
+        
+        <div class="form-grupo">
+          <label for="editar-nome">Nome *</label>
+          <input type="text" id="editar-nome" required>
+        </div>
+
+        <div class="form-grupo">
+          <label for="editar-setor">Setor *</label>
+          <input type="text" id="editar-setor" required>
+        </div>
+
+        <div class="form-grupo">
+          <label for="editar-data">Data *</label>
+          <input type="date" id="editar-data" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-grupo">
+            <label for="editar-hora-inicio">Hora Início *</label>
+            <select id="editar-hora-inicio" required onchange="atualizarHoraFimEdicao()"></select>
+          </div>
+
+          <div class="form-grupo">
+            <label for="editar-hora-fim">Hora Fim *</label>
+            <select id="editar-hora-fim" required></select>
+          </div>
+        </div>
+
+        <div class="form-grupo">
+          <label for="editar-pessoas">Quantidade de Pessoas *</label>
+          <input type="number" id="editar-pessoas" min="1" required>
+        </div>
+
+        <div class="form-grupo">
+          <label for="editar-descricao">Descrição</label>
+          <textarea id="editar-descricao" rows="3"></textarea>
+        </div>
+
+        <div class="form-botoes">
+          <button type="button" class="btn btn-secundario" onclick="fecharModalEditar()">Cancelar</button>
+          <button type="submit" class="btn btn-primario">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal Confirmar Exclusão -->
+  <div id="modal-confirmar-exclusao" class="modal">
+    <div class="modal-conteudo" style="max-width: 400px;">
+      <h2>Confirmar Exclusão</h2>
+      <p>Tem certeza que deseja excluir esta reserva?</p>
+      <div class="form-botoes">
+        <button type="button" class="btn btn-secundario" onclick="fecharModalConfirmacao()">Cancelar</button>
+        <button type="button" class="btn btn-perigo" onclick="confirmarExclusao()">Sim, Excluir</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/admin.js"></script>
+</body>
+</html>
