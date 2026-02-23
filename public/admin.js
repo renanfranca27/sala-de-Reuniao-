@@ -87,6 +87,7 @@ function renderizarTabelaAdmin() {
   reservasAdmin.forEach(reserva => {
     const tr = document.createElement('tr');
     const statusBadge = obterStatusBadge(reserva.status);
+    const reservaId = reserva._id || reserva.id;
     
     tr.innerHTML = `
       <td>${reserva.nome}</td>
@@ -96,8 +97,8 @@ function renderizarTabelaAdmin() {
       <td>${reserva.qtd_pessoas}</td>
       <td>${statusBadge}</td>
       <td class="tabela-acoes">
-        <button class="btn btn-pequeno btn-editar" onclick="abrirModalEditar(${reserva.id})">✏️</button>
-        <button class="btn btn-pequeno btn-excluir" onclick="abrirModalExcluir(${reserva.id})">🗑️</button>
+        <button class="btn btn-pequeno btn-editar" onclick="abrirModalEditar('${reservaId}')">✏️</button>
+        <button class="btn btn-pequeno btn-excluir" onclick="abrirModalExcluir('${reservaId}')">🗑️</button>
       </td>
     `;
     tbody.appendChild(tr);
@@ -136,6 +137,7 @@ function filtrarReservas() {
   reservasFiltradas.forEach(reserva => {
     const tr = document.createElement('tr');
     const statusBadge = obterStatusBadge(reserva.status);
+    const reservaId = reserva._id || reserva.id;
     
     tr.innerHTML = `
       <td>${reserva.nome}</td>
@@ -145,8 +147,8 @@ function filtrarReservas() {
       <td>${reserva.qtd_pessoas}</td>
       <td>${statusBadge}</td>
       <td class="tabela-acoes">
-        <button class="btn btn-pequeno btn-editar" onclick="abrirModalEditar(${reserva.id})">✏️</button>
-        <button class="btn btn-pequeno btn-excluir" onclick="abrirModalExcluir(${reserva.id})">🗑️</button>
+        <button class="btn btn-pequeno btn-editar" onclick="abrirModalEditar('${reservaId}')">✏️</button>
+        <button class="btn btn-pequeno btn-excluir" onclick="abrirModalExcluir('${reservaId}')">🗑️</button>
       </td>
     `;
     tbody.appendChild(tr);
@@ -155,10 +157,10 @@ function filtrarReservas() {
 
 // ========== MODAL EDITAR ==========
 function abrirModalEditar(id) {
-  const reserva = reservasAdmin.find(r => r.id === id);
+  const reserva = reservasAdmin.find(r => (r._id || r.id) === id);
   if (!reserva) return;
 
-  document.getElementById('editar-id').value = reserva.id;
+  document.getElementById('editar-id').value = id;
   document.getElementById('editar-nome').value = reserva.nome;
   document.getElementById('editar-setor').value = reserva.setor;
   document.getElementById('editar-data').value = reserva.data;
