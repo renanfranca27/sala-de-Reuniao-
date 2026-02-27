@@ -5,9 +5,9 @@ const router = express.Router();
 
 router.get('/info', async (req, res) => {
   try {
-    const hoje = new Date().toISOString().split('T')[0];
-    const agora = new Date();
-    const horaAtual = `${String(agora.getHours()).padStart(2, '0')}:${String(agora.getMinutes()).padStart(2, '0')}`;
+    const agora = reservaService.obterDataHoraBrasilia();
+    const hoje = agora.data;
+    const horaAtual = agora.hora;
 
     await reservaService.atualizarStatusReservas();
 

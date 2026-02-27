@@ -1,6 +1,37 @@
 import { getCollection } from '../db.js';
 import { ObjectId } from 'mongodb';
 
+// ========== FUNÇÃO AUXILIAR - TIMEZONE BRASÍLIA ==========
+function obterDataHoraBrasilia() {
+  const formatter = new Intl.DateTimeFormat('pt-BR', {
+    timeZone: 'America/Sao_Paulo',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false
+  });
+
+  const partes = formatter.formatToParts(new Date());
+  const obj = {};
+  partes.forEach(({ type, value }) => {
+    obj[type] = value;
+  });
+
+  const data = `${obj.year}-${obj.month}-${obj.day}`;
+  const hora = `${obj.hour}:${obj.minute}`;
+  const segundo = obj.second;
+
+  return {
+    data,
+    hora,
+    segundo,
+    date: new Date(`${obj.year}-${obj.month}-${obj.day}T${obj.hour}:${obj.minute}:${obj.second}`)
+  };
+}
+
 export async function getAllReservas(data = null, setor = null, nome = null) {
   const col = await getCollection('reservas');
   const filter = {};
@@ -30,8 +61,8 @@ export async function createReserva(dados) {
   const conflito = await verificarConflito(data, hora_inicio, hora_fim);
   if (conflito) throw new Error('Existe um conflito de horário com outra reserva');
 
-  const agora = new Date().toISOString().split('T')[0];
-  if (data < agora) throw new Error('Não é permitido agendar em datas passadas');
+  const agora = obterDataHoraBrasilia();
+  if (data < agora.data) throw new Error('Não é permitido agendar em datas passadas');
 
   const documento = {
     nome,
@@ -75,9 +106,9 @@ export async function deleteReserva(id) {
 
 export async function atualizarStatusReservas() {
   const col = await getCollection('reservas');
-  const agora = new Date();
-  const dataAtual = agora.toISOString().split('T')[0];
-  const horaAtual = `${String(agora.getHours()).padStart(2, '0')}:${String(agora.getMinutes()).padStart(2, '0')}`;
+  const agora = obterDataHoraBrasilia();
+  const dataAtual = agora.data;
+  const horaAtual = agora.hora;
 
   const reservas = await col.find({ data: dataAtual }).toArray();
 
@@ -130,4 +161,4 @@ async function verificarConflito(data, hora_inicio, hora_fim, excluirId = null) 
   return !!resultado;
 }
 
-export { validarIntervalo30min, horaEmMinutos };
+export { validarIntervalo30min, horaEmMinutos, obterDataHoraBrasilia };
