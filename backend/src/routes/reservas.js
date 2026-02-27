@@ -5,6 +5,9 @@ const router = express.Router();
 
 router.get('/', async (req, res) => {
   try {
+    // Atualizar status antes de retornar as reservas
+    await reservaService.atualizarStatusReservas();
+    
     const { data, setor, nome } = req.query;
     const reservas = await reservaService.getAllReservas(data, setor, nome);
     res.json(reservas);

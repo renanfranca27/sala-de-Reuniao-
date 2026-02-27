@@ -2,7 +2,6 @@
 let emailAdmin = localStorage.getItem('adminEmail');
 let reservasAdmin = [];
 let reservaParaExcluir = null;
-let statusIntervalId = null;
 
 // Inicializar
 document.addEventListener('DOMContentLoaded', () => {
@@ -61,12 +60,6 @@ function verificarAdmin() {
   
   carregarReservasAdmin();
   setInterval(carregarReservasAdmin, 30000);
-  if (!statusIntervalId) {
-    statusIntervalId = setInterval(() => {
-      atualizarStatusReservas();
-      renderizarTabelaAdmin();
-    }, 30000);
-  }
 }
 
 // ========== CARREGAMENTO DE DADOS ==========
@@ -74,7 +67,6 @@ async function carregarReservasAdmin() {
   try {
     const response = await fetch('/api/reservas');
     reservasAdmin = await response.json();
-    atualizarStatusReservas();
     renderizarTabelaAdmin();
   } catch (erro) {
     console.error('Erro ao carregar reservas:', erro);
@@ -322,41 +314,6 @@ function preencherHorarios() {
 }
 
 // ========== ATUALIZAR STATUS DINÂMICO ==========
-function atualizarStatusReservas() {
-  const agora = new Date();
-  reservasAdmin.forEach(reserva => {
-    try {
-      const data = reserva.data; // formato YYYY-MM-DD
-      const inicioStr = `${data}T${reserva.hora_inicio}:00`;
-      const fimStr = `${data}T${reserva.hora_fim}:00`;
-      const inicio = new Date(inicioStr);
-      const fim = new Date(fimStr);
-
-      if (isNaN(inicio) || isNaN(fim)) {
-        reserva.status = reserva.status || 'agendada';
-        return;
-      }
-
-      if (agora >= fim) {
-        reserva.status = 'finalizada';
-      } else if (agora >= inicio && agora < fim) {
-        reserva.status = 'em_andamento';
-      } else {
-        const diffMin = (inicio - agora) / 60000;
-        if (diffMin <= 30 && diffMin > 0) {
-          reserva.status = 'comecando_em_breve';
-        } else if (diffMin <= 0) {
-          // Se chegou exatamente no horário de início
-          reserva.status = agora < fim ? 'em_andamento' : 'finalizada';
-        } else {
-          reserva.status = 'agendada';
-        }
-      }
-    } catch (e) {
-      console.error('Erro ao calcular status da reserva', e);
-    }
-  });
-}
 
 function atualizarHoraFimEdicao() {
   const horaInicio = document.getElementById('editar-hora-inicio').value;
