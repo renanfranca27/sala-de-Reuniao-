@@ -144,6 +144,4 @@ Se quiser, posso:
 
 1. Remover arquivos legados permanentemente (já removidos nesta atualização).
 2. Atualizar o conteúdo do `public/` para apontar IDs de reserva como `_id` (se necessário).
-3. Adicionar testes automatizados básicos.
-
-Diga o próximo passo que prefere.
+3. Adicionar testes automatizados básicos
